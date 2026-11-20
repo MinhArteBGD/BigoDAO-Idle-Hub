@@ -1,0 +1,121 @@
+<Window x:Class="BigoDAOIdleHub.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="BigoDAO Idle Hub — v0.9.2 Beta" Width="1400" Height="860" MinWidth="950" MinHeight="600" Background="#0C1411" Foreground="White" Closing="Window_Closing">
+ <Window.Resources>
+  <Style TargetType="Button">
+   <Setter Property="Background" Value="#20362B"/>
+   <Setter Property="Foreground" Value="#EAF8EE"/>
+   <Setter Property="BorderBrush" Value="#355A43"/>
+   <Setter Property="BorderThickness" Value="1"/>
+   <Setter Property="Cursor" Value="Hand"/>
+   <Setter Property="Padding" Value="11,7"/>
+   <Setter Property="Template">
+    <Setter.Value><ControlTemplate TargetType="Button">
+     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+      <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+     </Border>
+     <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#2B5740"/></Trigger></ControlTemplate.Triggers>
+    </ControlTemplate></Setter.Value>
+   </Setter>
+  </Style>
+  <Style TargetType="TextBox">
+   <Setter Property="Background" Value="#F5FAF6"/>
+   <Setter Property="Foreground" Value="#102219"/>
+   <Setter Property="BorderThickness" Value="0"/>
+   <Setter Property="Padding" Value="8,3"/>
+  </Style>
+  <Style TargetType="ComboBoxItem">
+   <Setter Property="Foreground" Value="#EAF8EE"/><Setter Property="Background" Value="#20362B"/><Setter Property="Padding" Value="8,5"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBoxItem"><Border x:Name="ItemBorder" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsHighlighted" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#355A43"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#28543A"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+  </Style>
+  <Style TargetType="ComboBox">
+   <Setter Property="Foreground" Value="#EAF8EE"/><Setter Property="Background" Value="#20362B"/><Setter Property="BorderBrush" Value="#355A43"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBox">
+    <Grid><ToggleButton x:Name="Toggle" Focusable="False" IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" ClickMode="Press"><ToggleButton.Template><ControlTemplate TargetType="ToggleButton"><Border Background="#20362B" BorderBrush="#355A43" BorderThickness="1" CornerRadius="5"><TextBlock Text="⌄" Foreground="#A7BFAE" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,9,0"/></Border></ControlTemplate></ToggleButton.Template></ToggleButton>
+    <ContentPresenter IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Margin="9,0,25,0" VerticalAlignment="Center"/>
+    <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" Focusable="False"><Border Background="#20362B" BorderBrush="#355A43" BorderThickness="1" MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="280"><ScrollViewer><ItemsPresenter/></ScrollViewer></Border></Popup></Grid>
+   </ControlTemplate></Setter.Value></Setter>
+  </Style>
+ </Window.Resources>
+ <DockPanel>
+  <WrapPanel DockPanel.Dock="Top" Margin="16,14,16,8">
+   <TextBlock Text="BigoDAO / IDLE HUB" FontSize="22" FontWeight="Bold" Foreground="#3EE27C" VerticalAlignment="Center" Margin="0,0,18,9"/>
+   <TextBox x:Name="Address" Width="295" Height="32" VerticalContentAlignment="Center" Text="https://" Margin="0,0,7,9" ToolTip="Endereço HTTPS do jogo"/>
+   <TextBox x:Name="AccountName" Width="125" Height="32" VerticalContentAlignment="Center" Text="Conta 1" Margin="0,0,7,9" ToolTip="Nome da conta"/>
+   <Button Content="+ Adicionar conta" Click="Add_Click" Padding="10,6" Margin="0,0,7,9"/>
+   <Button Content="Modo grade" Click="Grid_Click" Padding="10,6" Margin="0,0,7,9"/>
+   <Button Content="Modo individual" Click="Single_Click" Padding="10,6" Margin="0,0,7,9"/>
+   <Button Content="Modo lista" Click="List_Click" Padding="10,6" Margin="0,0,7,9"/>
+  </WrapPanel>
+  <Border DockPanel.Dock="Bottom" Background="#12251B" Padding="14,7">
+   <StackPanel Orientation="Horizontal">
+    <TextBlock x:Name="SessionStats" Text="0 sessões" Foreground="#6BE79C" Margin="0,0,22,0"/>
+    <TextBlock Text="Criado por MinhArte  •  " Foreground="#6BE79C" Margin="0,0,10,0"/>
+    <TextBlock x:Name="SecurityNotice" Foreground="#F5CC80" Margin="0,0,12,0"/>
+    <TextBlock x:Name="ResourceStats" Text="CPU / RAM: medição do processo" Foreground="#B7D3C2"/>
+   </StackPanel>
+  </Border>
+  <Grid Margin="16,0,16,12">
+   <Grid.ColumnDefinitions><ColumnDefinition Width="252"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+   <DockPanel Grid.Column="0" Background="#17271F" Margin="0,0,10,0">
+    <StackPanel DockPanel.Dock="Top" Margin="10,10,10,5">
+     <TextBlock Text="BigoDAO / IDLE HUB" FontSize="18" FontWeight="Bold" Foreground="#3EE27C" Margin="0,0,0,5"/>
+     <TextBlock Text="Created by MinhArte" Foreground="#A7BFAE" FontSize="11" Margin="0,0,0,7"/>
+     <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+      <Button Content="T" Click="OpenTwitch_Click" ToolTip="Twitch — MinhArte" Width="35" Height="30" Foreground="#A970FF" FontWeight="Bold" Margin="0,0,6,0"/>
+      <Button Content="▶" Click="OpenYouTube_Click" ToolTip="YouTube — MinhArte" Width="35" Height="30" Foreground="#FF5555" Margin="0,0,6,0"/>
+      <Button Content="𝕏" Click="OpenX_Click" ToolTip="X — MinhArte" Width="35" Height="30" FontWeight="Bold" Margin="0,0,6,0"/>
+      <Button Content="◉" Click="OpenDiscord_Click" ToolTip="Discord — BigoDAO" Width="35" Height="30" Foreground="#8896FF" FontWeight="Bold"/>
+     </StackPanel>
+     <TextBlock Text="GRUPOS" Foreground="#3EE27C" FontWeight="Bold" Margin="0,0,0,7"/>
+     <ComboBox x:Name="GroupFilter" Height="30" SelectionChanged="GroupFilter_SelectionChanged" Margin="0,0,0,7"/>
+     <TextBox x:Name="GroupName" Height="29" VerticalContentAlignment="Center" Margin="0,0,0,6" ToolTip="Nome do novo grupo"/>
+     <UniformGrid Columns="2" Margin="0,0,0,5"><Button Content="+ Criar" Click="CreateGroup_Click" Padding="5" Margin="0,0,3,0"/><Button Content="Renomear" Click="RenameGroup_Click" Padding="5" ToolTip="Digite o novo nome no campo acima"/></UniformGrid>
+     <Button Content="Excluir grupo" Click="DeleteGroup_Click" Padding="5" Margin="0,0,0,10"/>
+     <TextBlock Text="CONTAS" Foreground="#3EE27C" FontWeight="Bold" Margin="0,0,0,7"/>
+    </StackPanel>
+    <StackPanel DockPanel.Dock="Bottom" Margin="10,5,10,10">
+     <TextBlock Text="MODO DA CONTA SELECIONADA" Foreground="#3EE27C" FontWeight="Bold" Margin="0,0,0,6"/>
+     <UniformGrid Columns="3" Margin="0,0,0,7">
+      <Button x:Name="NormalMode" Content="Normal" Tag="normal" Click="PowerMode_Click" Padding="4,9" Margin="0,0,3,0"/>
+      <Button x:Name="EcoMode" Content="Econômico" Tag="eco" Click="PowerMode_Click" Padding="4,9" Margin="2,0,2,0"/>
+      <Button x:Name="StandbyMode" Content="Standby" Tag="standby" Click="PowerMode_Click" Padding="4,9" Margin="3,0,0,0"/>
+     </UniformGrid>
+     <TextBlock x:Name="ModeHint" Text="Selecione uma conta para escolher o modo." TextWrapping="Wrap" Foreground="#A7BFAE" FontSize="11" Margin="0,0,0,9"/>
+     <Button Content="Ativar todas as contas" Click="ActivateAll_Click" Margin="0,0,0,12"/>
+     <TextBlock Text="ORDEM DAS CONTAS" Foreground="#3EE27C" FontWeight="Bold" Margin="0,0,0,5"/>
+     <StackPanel Orientation="Horizontal" Margin="0,0,0,7">
+      <Button Content="↑ Subir" Click="MoveUp_Click" Margin="0,0,6,0"/>
+      <Button Content="↓ Descer" Click="MoveDown_Click"/>
+     </StackPanel>
+     <Button Content="Mover para grupo" Click="MoveGroup_Click" Padding="5" Margin="0,0,0,5"/>
+     <Button Content="Renomear conta" Click="Rename_Click" Padding="7" Margin="0,0,0,5"/>
+     <Button Content="Fechar e remover conta" Click="Remove_Click" Padding="7" Margin="0,0,0,5"/>
+     <TextBlock Text="Perfis locais, sem servidor BigoDAO" Foreground="#9BAFA3" FontSize="10" TextWrapping="Wrap"/>
+    </StackPanel>
+    <ListBox x:Name="Sessions" Background="Transparent" Foreground="White" BorderThickness="0" Margin="8,0" SelectionChanged="Sessions_SelectionChanged" DisplayMemberPath="Display"/>
+   </DockPanel>
+   <Grid Grid.Column="1" Background="#101C16">
+    <Grid x:Name="BrowserHost" Background="#101C16"/>
+    <ScrollViewer x:Name="GridScroll" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Background="#101C16">
+     <UniformGrid x:Name="Tiles" Columns="2" Margin="4"/>
+    </ScrollViewer>
+    <ScrollViewer x:Name="ListScroll" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Background="#101C16">
+     <StackPanel Margin="12">
+      <TextBlock Text="CONTAS  /  VISÃO GERAL" FontSize="17" FontWeight="Bold" Foreground="#3EE27C" Margin="6,6,0,12"/>
+      <Grid Margin="6,0,6,8">
+       <Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition Width="110"/><ColumnDefinition Width="110"/><ColumnDefinition Width="155"/><ColumnDefinition Width="100"/></Grid.ColumnDefinitions>
+       <TextBlock Grid.Column="0" Text="CONTA / GRUPO" Foreground="#A7BFAE"/>
+       <TextBlock Grid.Column="1" Text="RAM*" Foreground="#A7BFAE"/>
+       <TextBlock Grid.Column="2" Text="CPU*" Foreground="#A7BFAE"/>
+       <TextBlock Grid.Column="3" Text="MODO" Foreground="#A7BFAE"/>
+       <TextBlock Grid.Column="4" Text="ABRIR" Foreground="#A7BFAE"/>
+      </Grid>
+      <StackPanel x:Name="ListRows"/>
+      <TextBlock Text="* RAM privada residente e CPU dos processos WebView2 identificados. Processos compartilhados são atribuídos à primeira conta para evitar duplicação. São estimativas de uso de processo, não métricas internas do jogo; CPU atualiza a cada 8 segundos." TextWrapping="Wrap" Foreground="#A7BFAE" Margin="6,12,6,0" FontSize="11"/>
+     </StackPanel>
+    </ScrollViewer>
+    <Grid x:Name="HiddenHost" Visibility="Collapsed" IsHitTestVisible="False"/>
+    <TextBlock x:Name="EmptyMessage" Text="Crie um grupo, adicione um jogo e escolha o modo de visualização." Foreground="#9BAFA3" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Margin="30"/>
+   </Grid>
+  </Grid>
+ </DockPanel>
+</Window>

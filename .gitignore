@@ -1,0 +1,7 @@
+*
+!/.gitignore
+!/*.cs
+!/*.xaml
+!/*.csproj
+!/*.md
+!/LICENSE

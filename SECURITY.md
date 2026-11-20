@@ -1,0 +1,4 @@
+# Segurança / Security
+PT: Reporte falhas em privado pelo recurso de vulnerabilidades do GitHub quando habilitado. Não publique cookies, tokens, dados pessoais ou detalhes exploráveis em issues. Mantenha Windows, .NET e WebView2 atualizados. Não execute como administrador. Não importe seed phrases. Downloads, pop-ups, permissões de sites e protocolos externos são bloqueados nesta candidata; alguns logins podem falhar. HTTPS não garante site confiável.
+
+EN: Report vulnerabilities privately using GitHub private vulnerability reporting once enabled. Do not post secrets or exploitable details in public issues. Keep Windows, .NET and WebView2 patched. Do not run as administrator or import seed phrases. Downloads, popups, site permissions and external protocols are blocked in this candidate; some sign-ins may fail. HTTPS does not guarantee trust. No security guarantee or full penetration test.
